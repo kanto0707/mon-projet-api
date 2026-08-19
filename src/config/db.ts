@@ -10,8 +10,11 @@ const pool = new Pool({
 
 export async function checkConnection(): Promise<boolean> {
   const client = await pool.connect();
-  client.release();
-  return true;
+  try {
+    return true;
+  } finally {
+    client.release();
+  }
 }
 
 export { pool };

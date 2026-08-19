@@ -20,8 +20,14 @@ export async function create(data: Etudiant): Promise<Etudiant> {
   return result.rows[0];
 }
 
-export async function update(id: string, data: Etudiant): Promise<Etudiant | null> {
-  const { nom, prenom, email } = data;
+export async function update(id: string, data: Partial<Etudiant>): Promise<Etudiant | null> {
+  const current = await findById(id);
+  if (!current) return null;
+
+  const nom = data.nom ?? current.nom;
+  const prenom = data.prenom ?? current.prenom;
+  const email = data.email ?? current.email;
+
   const result = await pool.query(
     'UPDATE etudiants SET nom = $1, prenom = $2, email = $3 WHERE id = $4 RETURNING *',
     [nom, prenom, email, id]
