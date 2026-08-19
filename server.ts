@@ -2,18 +2,35 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
 import etudiantRoutes from './src/routes/etudiantRoutes';
 import { checkConnection } from './src/config/db';
 
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
 
+app.use(cors());
 app.use(express.json());
+
+app.post('/login', (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (email === 'admin@example.com' && password === '123456') {
+    const payload = { email };
+    const secretKey = process.env.JWT_SECRET || 'fallback_secret';
+
+    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+    return res.json({ token });
+  }
+
+  return res.status(401).json({ error: 'Identifiants invalides' });
+});
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({
     message: 'API REST des étudiants',
-    endpoints: ['/etudiants', '/etudiants/:id']
+    endpoints: ['/login', '/etudiants', '/etudiants/:id']
   });
 });
 
