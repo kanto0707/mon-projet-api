@@ -9,12 +9,16 @@
     "dev": "ts-node server.ts"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
     "express": "^4.19.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.9.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.10.1",
     "@types/pg": "^8.5.4",
     "ts-node": "^10.9.2",
